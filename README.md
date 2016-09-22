@@ -6,4 +6,13 @@ Prepared for the [Lucene Solr Revolution 2016 Conference](http://lucenerevolutio
 
 Getting up and running
 ----------------------
-Use the instructions in the other repository [https://github.com/jstrassburg/solr-jenkins-cicd](https://github.com/jstrassburg/solr-jenkins-cicd).
+For deploying using Jenkins, use the instructions in the other repository [https://github.com/jstrassburg/solr-jenkins-cicd](https://github.com/jstrassburg/solr-jenkins-cicd)
+
+For developing solr locally use:
+
+    scripts/start_solr.sh
+    scripts/stop_solr.sh
+
+* You must compile solr in the lucene-solr repo to run Solr locally
+* Optionally you can export a GITHUB_HOME directory on which to find the compiled lucene-solr repo
+** This will default to `pwd`/.. 

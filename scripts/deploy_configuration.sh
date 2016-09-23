@@ -1,8 +1,7 @@
 # Usage from Jenkins:
-# deploy_configuration.sh server_to_deploy_to environment solr_home log_dir solr_username service_name
+# deploy_configuration.sh server_to_deploy_to environment solr_home log_dir solr_username service_name private_key_file
 # Where environemnt is one of: STAGE, PRODUCTION
-# deploy_configuration.sh 10.0.0.11 /usr/local/solr/data /var/log/solr solr solr
-# Calling script must export SSHKEYFILE to use for deploy
+# deploy_configuration.sh STAGE 10.0.0.11 /usr/local/solr/data /var/log/solr solr solr ~/.ssh/my_key
 
 server="$1"
 environment="$2"
@@ -10,6 +9,7 @@ SOLR_HOME="$3"
 LOG_DIR="$4"
 SOLR_USER="$5"
 SOLR_SERVICE="$6"
+SSHKEYFILE="$7"
 
 DEPLOY_DIR=/tmp/deploy
 SOLR_INSTALL_DIR=/opt/solr

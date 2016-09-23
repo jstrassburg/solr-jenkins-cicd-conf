@@ -43,25 +43,32 @@ ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $SSHKEYFIL
     sudo mkdir -p $SOLR_HOME/configprops
 
     echo "Deploying configsets..."
-    sudo mv $DEPLOY_DIR/configsets $SOLR_HOME
+    sudo cp -R $DEPLOY_DIR/configsets $SOLR_HOME
+    rm -rf $DEPLOY_DIR/configsets
 
     echo "Deploying collections..."
-    sudo mv $DEPLOY_DIR/collections $SOLR_HOME
+    sudo cp -R $DEPLOY_DIR/collections $SOLR_HOME
+    rm -rf $DEPLOY_DIR/collections
 
     echo "Deploying libs..."
-    sudo mv $DEPLOY_DIR/libs $SOLR_HOME
+    sudo cp -R $DEPLOY_DIR/libs $SOLR_HOME
+    rm -rf $DEPLOY_DIR/libs
 
     echo "Deploying solr.xml..."
-    sudo mv $DEPLOY_DIR/solr.xml $SOLR_HOME
+    sudo cp $DEPLOY_DIR/solr.xml $SOLR_HOME
+    rm -f $DEPLOY_DIR/solr.xml
 
     echo "Deploying configprops/allcores.properties..."
-    sudo mv $DEPLOY_DIR/allcores.$environment.properties $SOLR_HOME/configprops/allcores.properties
+    sudo cp $DEPLOY_DIR/allcores.$environment.properties $SOLR_HOME/configprops/allcores.properties
+    rm -f $DEPLOY_DIR/allcores.$environment.properties
 
     echo "Deploying solr.in.sh..."
-    sudo mv $DEPLOY_DIR/solr.in.$environment.sh /etc/default/solr.in.sh
+    sudo cp $DEPLOY_DIR/solr.in.$environment.sh /etc/default/solr.in.sh
+    rm -f $DEPLOY_DIR/solr.in.$environemnt.sh
 
     echo "Deploying log4j.properties..."
-    sudo mv $DEPLOY_DIR/log4j.properties $SOLR_HOME/../
+    sudo cp $DEPLOY_DIR/log4j.properties $SOLR_HOME/../
+    rm -f $DEPLOY_DIR/log4j.properties
 
     echo "Creating $LOG_DIR if it doesn't exist and setting permissions..."
     sudo mkdir -p $LOG_DIR

@@ -52,26 +52,20 @@ ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $SSHKEYFIL
     sudo mv $DEPLOY_DIR/libs $SOLR_HOME
 
     echo "Deploying solr.xml..."
-    sudo mv solr.xml $SOLR_HOME
+    sudo mv $DEPLOY_DIR/solr.xml $SOLR_HOME
 
     echo "Deploying configprops/allcores.properties..."
-    sudo mv allcores.$environment.properties $SOLR_HOME/configprops/allcores.properties
+    sudo mv $DEPLOY_DIR/allcores.$environment.properties $SOLR_HOME/configprops/allcores.properties
 
     echo "Deploying solr.in.sh..."
-    sudo mv solr.in.$environment.sh /etc/default/solr.in.sh
+    sudo mv $DEPLOY_DIR/solr.in.$environment.sh /etc/default/solr.in.sh
 
     echo "Deploying log4j.properties..."
-    sudo mv log4j.properties $SOLR_HOME/../
+    sudo mv $DEPLOY_DIR/log4j.properties $SOLR_HOME/../
 
     echo "Creating $LOG_DIR if it doesn't exist and setting permissions..."
     sudo mkdir -p $LOG_DIR
     sudo chown -R "$SOLR_USER":"$SOLR_USER" $LOG_DIR
-
-    echo "Renaming environment allcores.properties..."
-    sudo mv $SOLR_HOME/configprops/allcores.$environment.properties $SOLR_HOME/configprops/allcores.properties
-    
-    echo "Renaming environment solr.in.sh..."
-    sudo mv /etc/default/solr.in.$environment.sh /etc/default/solr.in.sh
 
     echo "Changing ownership on root copied things..."
     sudo chown -R "$SOLR_USER":"$SOLR_USER" $SOLR_HOME

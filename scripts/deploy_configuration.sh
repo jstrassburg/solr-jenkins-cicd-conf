@@ -11,48 +11,72 @@ SOLR_USER="$5"
 SOLR_SERVICE="$6"
 SSHKEYFILE="$7"
 
-DEPLOY_DIR=/tmp/deploy
+DEPLOY_DIR=~
 SOLR_INSTALL_DIR=/opt/solr
 
 echo "Copying configsets to $server..."
-scp -r -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/configsets root@$server:$SOLR_HOME
+scp -r -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/configsets vagrant@$server:$DEPLOY_DIR
 
 echo "Copying collection configurations to $server..."
-scp -r -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/collections root@$server:$SOLR_HOME
+scp -r -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/collections vagrant@$server:$DEPLOY_DIR
 
 echo "Copying libraries directory to $server..."
-scp -r -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/lib root@$server:$SOLR_HOME
+scp -r -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/lib vagrant@$server:$DEPLOY_DIR
 
 echo "Copying solr.xml to $server..."
-scp -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/solr.xml root@$server:$SOLR_HOME
-
-echo "Creating configprops directory if it doesn't exist..."
-ssh -t -i $SSHKEYFILE -o StrictHostKeyChecking=no root@$server mkdir -p $SOLR_HOME/configprops
+scp -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/solr.xml vagrant@$server:$DEPLOY_DIR
 
 echo "Copying allcores.$environment.properties to $server..."
-scp -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/configprops/allcores.$environment.properties root@$server:$SOLR_HOME/configprops
+scp -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/configprops/allcores.$environment.properties vagrant@$server:$DEPLOY_DIR
 
 echo "Copying solr.in.sh to $server..."
-scp -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/solr.in.$environment.sh root@$server:/etc/default
+scp -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/solr.in.$environment.sh vagrant@$server:$DEPLOY_DIR
 
 echo "Copying log4j.properties to $server..."
-scp -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/log4j.properties root@$server:$SOLR_HOME/..
+scp -i $SSHKEYFILE -o StrictHostKeyChecking=no home/solr_instance/log4j.properties vagrant@$server:$DEPLOY_DIR
 
-ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $SSHKEYFILE root@$server << FINISH
+ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $SSHKEYFILE vagrant@$server << FINISH
+    echo "Creating Solr home directory if it doesn't exist...'"
+    sudo mkdir -p $SOLR_HOME
+
+    echo "Creating configprops directory if it doesn't exist..."
+    sudo mkdir -p $SOLR_HOME/configprops
+
+    echo "Deploying configsets..."
+    sudo mv $DEPLOY_DIR/configsets $SOLR_HOME
+
+    echo "Deploying collections..."
+    sudo mv $DEPLOY_DIR/collections $SOLR_HOME
+
+    echo "Deploying libs..."
+    sudo mv $DEPLOY_DIR/libs $SOLR_HOME
+
+    echo "Deploying solr.xml..."
+    sudo mv solr.xml $SOLR_HOME
+
+    echo "Deploying configprops/allcores.properties..."
+    sudo mv allcores.$environment.properties $SOLR_HOME/configprops/allcores.properties
+
+    echo "Deploying solr.in.sh..."
+    sudo mv solr.in.$environment.sh /etc/default/solr.in.sh
+
+    echo "Deploying log4j.properties..."
+    sudo mv log4j.properties $SOLR_HOME/../
+
     echo "Creating $LOG_DIR if it doesn't exist and setting permissions..."
-    mkdir -p $LOG_DIR
-    chown -R "$SOLR_USER":"$SOLR_USER" $LOG_DIR
+    sudo mkdir -p $LOG_DIR
+    sudo chown -R "$SOLR_USER":"$SOLR_USER" $LOG_DIR
 
     echo "Renaming environment allcores.properties..."
-    mv $SOLR_HOME/configprops/allcores.$environment.properties $SOLR_HOME/configprops/allcores.properties
+    sudo mv $SOLR_HOME/configprops/allcores.$environment.properties $SOLR_HOME/configprops/allcores.properties
     
     echo "Renaming environment solr.in.sh..."
-    mv /etc/default/solr.in.$environment.sh /etc/default/solr.in.sh
+    sudo mv /etc/default/solr.in.$environment.sh /etc/default/solr.in.sh
 
     echo "Changing ownership on root copied things..."
-    chown -R "$SOLR_USER":"$SOLR_USER" $SOLR_HOME
-    chmod -R a+r $SOLR_HOME
+    sudo chown -R "$SOLR_USER":"$SOLR_USER" $SOLR_HOME
+    sudo chmod -R a+r $SOLR_HOME
     
     echo "Restarting Solr service"
-    service $SOLR_SERVICE restart
+    sudo service $SOLR_SERVICE restart
 FINISH

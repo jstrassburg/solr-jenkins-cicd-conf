@@ -1,7 +1,7 @@
 # Usage from Jenkins:
 # deploy_configuration.sh server_to_deploy_to environment solr_home log_dir solr_username service_name private_key_file
 # Where environemnt is one of: STAGE, PRODUCTION
-# deploy_configuration.sh STAGE 10.0.0.11 /usr/local/solr/data /var/log/solr solr solr ~/.ssh/my_key
+# deploy_configuration.sh 10.0.0.11 STAGE /usr/local/solr/data /var/log/solr solr solr ~/.ssh/my_key
 
 server="$1"
 environment="$2"

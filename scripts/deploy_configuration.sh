@@ -51,8 +51,8 @@ ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $SSHKEYFIL
     rm -rf $DEPLOY_DIR/collections
 
     echo "Deploying libs..."
-    sudo cp -R $DEPLOY_DIR/libs $SOLR_HOME
-    rm -rf $DEPLOY_DIR/libs
+    sudo cp -R $DEPLOY_DIR/lib $SOLR_HOME
+    rm -rf $DEPLOY_DIR/lib
 
     echo "Deploying solr.xml..."
     sudo cp $DEPLOY_DIR/solr.xml $SOLR_HOME
@@ -68,7 +68,7 @@ ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $SSHKEYFIL
 
     echo "Deploying log4j.properties..."
     sudo cp $DEPLOY_DIR/log4j.properties $SOLR_HOME/../
-    rm -f $DEPLOY_DIR/log4j.properties
+    rm -f $DEPLOY_DIR/log4j.propertiesa
 
     echo "Creating $LOG_DIR if it doesn't exist and setting permissions..."
     sudo mkdir -p $LOG_DIR

@@ -5,11 +5,14 @@ node {
     archive '**/*'
 
     stage "Test Stage Deploy"
-    sh 'echo TODO - Test here'
+    sh 'curl http://10.0.0.11:8983/solr'
 
     // This would pause the Pipeline for manual release approval
     // input message: 'To approve this release click Approve', ok: 'Approve', submitter: 'admin'
 
     stage "Deploy Solr - Production Env"
     sh 'scripts/deploy_configuration.sh 10.0.0.12 PRODUCTION /usr/local/solr/data /var/log/solr solr solr ~/prod_private_key'
+
+    stage "Test Production Deploy"
+    sh 'curl http://10.0.0.12:8983/solr'
 }

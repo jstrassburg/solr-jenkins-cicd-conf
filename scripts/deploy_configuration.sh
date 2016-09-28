@@ -11,7 +11,7 @@ SOLR_USER="$5"
 SOLR_SERVICE="$6"
 SSHKEYFILE="$7"
 
-DEPLOY_DIR=/vagrant/home
+DEPLOY_DIR=deploy
 SOLR_INSTALL_DIR=/opt/solr
 
 echo "Copying configsets to $server..."
